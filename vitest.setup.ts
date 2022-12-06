@@ -12,7 +12,7 @@ import {
   IDBOpenDBRequest,
   IDBRequest,
   IDBTransaction,
-  IDBVersionChangeEvent,
+  IDBVersionChangeEvent
 } from "fake-indexeddb"
 
 vi.stubGlobal("indexedDB", indexedDB)

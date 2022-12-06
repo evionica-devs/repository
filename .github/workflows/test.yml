@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+name: Lint & Test
 
 on:
   push:
@@ -12,15 +12,46 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v3
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: 18.12.1
-        cache: 'pnpm'
-    - run: pnpm ci
-    - run: echo "${CI_COMMIT_TITLE}\n\n${CI_COMMIT_DESCRIPTION}" | ./node_modules/.bin/commitlint
-    - run: pnpm lint
-    - run: pnpm test
+
+    - uses: pnpm/action-setup@v2
+      name: Install pnpm
+      id: pnpm-install
+      with:
+        version: 7
+        run_install: false
+
+    - name: Get pnpm store directory
+      id: pnpm-cache
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+    - uses: actions/cache@v3
+      name: Setup pnpm cache
+      with:
+        path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - run: echo ${{ github.event.commits[0].message }}
+
+    - name: Validate commit
+      run: echo ${{ github.event.commits[0].message }} | ./node_modules/.bin/commitlint
+
+    - name: Lint via eslint
+      run: pnpm lint
+
+    - name: Run unit tests
+      run: pnpm test

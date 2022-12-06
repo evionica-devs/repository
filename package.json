@@ -1,0 +1,71 @@
+{
+  "name": "@evionica-devs/repository",
+  "version": "0.1.0",
+  "description": "",
+  "keywords": [],
+  "contributors": [
+    {
+      "name": "Mateusz Gostański",
+      "url": "https://github.com/grixu",
+      "email": "m.gostanski@evionica.com"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/Evionica_DEV/frontend-core.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/Evionica_DEV/frontend-core/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build:types": "tsc && tsc-alias",
+    "build:code": "vite build",
+    "build:dts": "dts-bundle-generator types/src/index.d.ts -o dist/index.d.ts --no-check --no-banner",
+    "build": "pnpm run build:types && pnpm run build:code && pnpm run build:dts",
+    "lint": "eslint --ext .ts . --fix",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@types/lodash-es": "^4.17.6",
+    "@types/node": "^18.11.11",
+    "@types/uuid": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.1",
+    "@typescript-eslint/parser": "^5.45.1",
+    "@vitest/coverage-c8": "^0.25.4",
+    "c8": "^7.12.0",
+    "dts-bundle-generator": "^7.1.0",
+    "eslint": "^8.29.0",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.26.0",
+    "fake-indexeddb": "^4.0.1",
+    "husky": "^8.0.2",
+    "jsdom": "^20.0.3",
+    "node-fetch": "^3.3.0",
+    "tsc-alias": "^1.8.1",
+    "typescript": "^4.9.3",
+    "vite": "^3.2.5",
+    "vitest": "^0.25.4"
+  },
+  "dependencies": {
+    "lodash-es": "^4.17.21",
+    "uuid": "^9.0.0"
+  }
+}

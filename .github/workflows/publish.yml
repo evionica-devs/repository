@@ -1,19 +1,35 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Lint & Test
+name: Release
 
 on:
-  pull_request:
+  push:
     branches: [ "main" ]
-  workflow_call:
 
 jobs:
   test:
+    uses: ./.github/workflows/test.yml
+
+  release:
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Configure git
+      run: |
+        git config user.name "${GITHUB_ACTOR}"
+        git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+    - name: Authenticate with npm
+      run: npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_RELEASE_TOKEN }}
+
+    - name: NPM who am i
+      run: npm whoami
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -44,13 +60,6 @@ jobs:
     - name: Install dependencies
       run: pnpm install
 
-    - run: echo ${{ github.event.commits[0].message }}
-
-    - name: Validate commit
-      run: echo ${{ github.event.commits[0].message }} | ./node_modules/.bin/commitlint
-
-    - name: Lint via eslint
-      run: pnpm lint
-
-    # - name: Run unit tests
-    #   run: pnpm test
+    - run: pnpm release:ci
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

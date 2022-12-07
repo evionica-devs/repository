@@ -1,5 +1,5 @@
 {
-  "name": "@evionica-devs/repository",
+  "name": "@evionica/repository",
   "version": "0.1.0",
   "description": "",
   "keywords": [],
@@ -29,6 +29,9 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
@@ -39,11 +42,13 @@
     "build:dts": "dts-bundle-generator types/src/index.d.ts -o dist/index.d.ts --no-check --no-banner",
     "build": "pnpm run build:types && pnpm run build:code && pnpm run build:dts",
     "lint": "eslint --ext .ts . --fix",
-    "test": "vitest run"
+    "test": "vitest run",
+    "release:ci": "release-it --ci"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
+    "@release-it/conventional-changelog": "^5.1.1",
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.11.11",
@@ -60,6 +65,7 @@
     "husky": "^8.0.2",
     "jsdom": "^20.0.3",
     "node-fetch": "^3.3.0",
+    "release-it": "^15.5.1",
     "tsc-alias": "^1.8.1",
     "typescript": "^4.9.3",
     "vite": "^3.2.5",

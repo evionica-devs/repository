@@ -1,7 +1,7 @@
 {
   "name": "@evionica/repository",
   "version": "0.1.0",
-  "description": "",
+  "description": "Advanced repository pattern for frontend applications in TypeScript",
   "keywords": [],
   "contributors": [
     {
@@ -43,7 +43,10 @@
     "build": "pnpm run build:types && pnpm run build:code && pnpm run build:dts",
     "lint": "eslint --ext .ts . --fix",
     "test": "vitest run",
-    "release:ci": "release-it --ci"
+    "release:ci": "release-it --ci",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",

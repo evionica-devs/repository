@@ -52,5 +52,5 @@ jobs:
     - name: Lint via eslint
       run: pnpm lint
 
-    # - name: Run unit tests
-    #   run: pnpm test
+    - name: Run unit tests
+      run: pnpm test

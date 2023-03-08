@@ -25,11 +25,6 @@ module.exports = {
     project: ['./tsconfig.json'],
   },
 
-  plugins: [
-    "@typescript-eslint",
-    "import",
-  ],
-
   extends: [
     "evionica/ts",
   ],
@@ -38,7 +33,6 @@ module.exports = {
     "import/parsers": {
       "@typescript-eslint/parser": [
         ".ts",
-        ".tsx",
         ".mts",
         ".cts",
       ],
